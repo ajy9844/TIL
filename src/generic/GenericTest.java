@@ -6,11 +6,14 @@ import org.junit.jupiter.api.Test;
 public class GenericTest {
 
     @Test
-    void runtimeExceptionTest() {
-        Person person = new Person("파트너");
-        Assertions.assertThrows(ClassCastException.class, () -> {
-            Employee employee = (Employee) person.info;
-        });
+    void compileTimeExceptionTest() {
+        Person<Employee> person = new Person<>(new Employee(10));
+        Employee employee = person.info;
+        Assertions.assertEquals(10, employee.rank);
+
+        // 컴파일 오류 발생
+        // java: incompatible types: java.lang.String cannot be converted to int
+//        Person<Employee> person2 = new Person(new Employee("파트너"));
     }
 
     static class Employee {
@@ -20,9 +23,9 @@ public class GenericTest {
         }
     }
 
-    static class Person {
-        private Object info;
-        public Person(Object info) {
+    static class Person<T> {
+        private T info;
+        public Person(T info) {
             this.info = info;
         }
     }
