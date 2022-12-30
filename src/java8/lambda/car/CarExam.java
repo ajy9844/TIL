@@ -12,7 +12,14 @@ public class CarExam {
         cars.add(new Car("중간차", 5, 2200, 0));
         cars.add(new Car("비싼차", 5, 3500, 1));
 
-        printCar(cars, new CheckCarForBigAndNotExpensive());
+        printCar(cars,
+                // 익명 클래스를 만들어서 사용한다.
+                // 4명 이상이 탈 수 있고 가격이 2500만원 이하인 차를 검색한다.
+                new CheckCar() {
+                    public boolean test(Car car) {
+                        return car.capacity >= 4 && car.price <= 2500;
+                    }
+                });
     }
 
     public static void printCar(List<Car> cars, CheckCar tester) {
@@ -20,15 +27,6 @@ public class CarExam {
             if (tester.test(car)) {
                 System.out.println(car);
             }
-        }
-    }
-
-    // 내부 클래스를 만들어서 사용한다.
-    // 4명 이상이 탈 수 있고 가격이 2500만원 이하인 차를 검색한다.
-    static class CheckCarForBigAndNotExpensive implements CheckCar {
-        @Override
-        public boolean test(Car car) {
-            return car.capacity >= 4 && car.price <= 2500;
         }
     }
 }
